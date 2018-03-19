@@ -23,7 +23,7 @@ def triggered_callback(channel):
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=80)
- 	GPIO.setmode(GPIO.BOARD)
+ 	GPIO.setmode(GPIO.BCM)
  	channel = [20]
  	GPIO.setup(channel, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
  	while True:
