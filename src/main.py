@@ -30,4 +30,8 @@ if __name__ == '__main__':
  	GPIO.setup(channel, GPIO.IN) #, pull_up_down=GPIO.PUD_DOWN
 	print('Starting edge event monitoring')
 	GPIO.add_event_detect(channel, GPIO.RISING, callback=triggered_callback, bouncetime=200)
+	while True:
+		time.sleep(10)
+		print('Still waiting...')
 	print('Stopping (?)')
+
