@@ -1,12 +1,7 @@
-from flask import Flask
 import requests
 import time
-
-app = Flask(__name__)
-
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
+import RPi.GPIO as GPIO
+import time
 
 # TODO
 
@@ -16,12 +11,19 @@ def hello_world():
 
 # 	Take picture with synced settings
 
+def triggered_callback(channel):
+    print('This is a edge event callback function!')
+    print('Edge detected on channel %s'%channel)
+    print('This is run in a different thread to your main program')
+    r = requests.get('http://192.168.1.123/sync')
+
 #	Upload picture
 
 # 	Re-sync settings
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=80)
+ 	channel = [20]
+ 	GPIO.setup(channel, GPIO.IN, pull_up_down=GPIO.PUD_DOWN, bouncetime=200)
  	while True:
- 		r = requests.get('http://192.168.1.123/sync')
- 		time.sleep(30)
+ 		GPIO.add_event_detect(channel, GPIO.RISING, callback=triggered_callback)
