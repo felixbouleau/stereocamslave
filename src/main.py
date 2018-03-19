@@ -29,5 +29,7 @@ if __name__ == '__main__':
  	channel = 20
  	GPIO.setup(channel, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
  	while True:
+ 		print('Starting edge event monitoring')
  		GPIO.add_event_detect(channel, GPIO.RISING, callback=triggered_callback, bouncetime=200)
  		GPIO.remove_event_detect(channel)
+ 		print('Stopping')
