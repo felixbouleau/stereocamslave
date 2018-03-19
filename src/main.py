@@ -27,7 +27,7 @@ def triggered_callback(channel):
 if __name__ == '__main__':
  	GPIO.setmode(GPIO.BCM)
  	channel = 26
- 	GPIO.setup(channel, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+ 	GPIO.setup(channel, GPIO.IN) #, pull_up_down=GPIO.PUD_DOWN
  	while True:
  		print('Starting edge event monitoring')
  		GPIO.add_event_detect(channel, GPIO.RISING, callback=triggered_callback, bouncetime=200)
