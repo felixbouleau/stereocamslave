@@ -23,6 +23,11 @@ def triggered_callback(channel):
     # serving from master node
     r = requests.get('http://192.168.1.123/snap/%s' % SLAVE_ID)
 
+    url = "http://192.168.1.123/"
+    file_path = "/usr/src/app/sample-%s.jpg" % SLAVE_ID
+    files = {'media': open(file_path, "rb")}
+    requests.post(url, files=files)
+
 #	Upload picture
 
 # 	Re-sync settings
