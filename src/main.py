@@ -16,9 +16,7 @@ SLAVE_ID = None
 
 
 def triggered_callback(channel):
-    print('This is a edge event callback function!')
-    print('Edge detected on channel %s'%channel)
-    print('This is run in a different thread to your main program')
+    print('Trigger detected on channel %s. Uploading sample image...'%channel)
     # TODO send static mock picture so we can work on the gif creation and
     # serving from master node
     r = requests.get('http://192.168.1.123/snap/%s' % SLAVE_ID)
@@ -27,6 +25,7 @@ def triggered_callback(channel):
     file_path = "/usr/src/app/sample-%s.jpg" % SLAVE_ID
     files = {'media': open(file_path, "rb")}
     requests.post(url, files=files)
+    print('Upload completed')
 
 #	Upload picture
 
