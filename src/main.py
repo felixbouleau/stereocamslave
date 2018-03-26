@@ -22,7 +22,7 @@ def triggered_callback(channel):
     r = requests.get('http://192.168.1.123/snap/%s' % SLAVE_ID)
 
     url = "http://192.168.1.123/"
-    file_path = "/usr/src/app/sample-%s.jpg" % SLAVE_ID
+    file_path = "/usr/src/app/sample-img/sample-%s.jpg" % SLAVE_ID
     files = {'file': open(file_path, "rb")}
     requests.post(url, files=files)
     print('Upload completed')
