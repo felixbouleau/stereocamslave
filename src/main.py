@@ -16,7 +16,7 @@ SLAVE_ID = None
 # 	Take picture with synced settings
 
 def take_picture():
-	camera = PiCamera()
+	camera = picamera.PiCamera()
 	camera.resolution = (1024, 768)
 	camera.start_preview()
 	# Camera warm-up time
@@ -42,7 +42,7 @@ def triggered_callback(channel):
 if __name__ == '__main__':
  	
 	take_picture()
-	
+
 	# Get slave ID ("which camera in the sequence am I?")
 	SLAVE_ID = os.environ["SLAVE_ID"]
 	if SLAVE_ID is None:
