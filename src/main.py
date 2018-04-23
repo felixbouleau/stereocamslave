@@ -20,7 +20,7 @@ def take_picture():
 	camera.resolution = (1024, 768)
 	camera.start_preview()
 	# Camera warm-up time
-	sleep(2)
+	time.sleep(2)
 	camera.capture('/data/foo.jpg')
 
 def triggered_callback(channel):
