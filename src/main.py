@@ -6,6 +6,7 @@ import os
 import picamera
 
 SLAVE_ID = None
+CAMERA = None
 
 # TODO
 
@@ -15,22 +16,11 @@ SLAVE_ID = None
 
 # 	Take picture with synced settings
 
-def take_picture():
-	camera = picamera.PiCamera()
-	camera.resolution = (1024, 768)
-	camera.start_preview()
-	# Camera warm-up time
-	time.sleep(2)
-	camera.capture('/data/foo.jpg')
-
 def triggered_callback(channel):
     print('Trigger detected on channel %s. Uploading sample image...'%channel)
-    # TODO send static mock picture so we can work on the gif creation and
-    # serving from master node
-    r = requests.get('http://192.168.1.123/snap/%s' % SLAVE_ID)
-
+	camera.capture('/data/%s.jpg') % SLAVE_ID
     url = "http://192.168.1.123/"
-    file_path = "/usr/src/app/sample-img/sample-%s.jpg" % SLAVE_ID
+    file_path = "/data/%s.jpg" % SLAVE_ID
     files = {'file': open(file_path, "rb")}
     requests.post(url, files=files)
     print('Upload completed')
@@ -40,8 +30,10 @@ def triggered_callback(channel):
 # 	Re-sync settings
 
 if __name__ == '__main__':
- 	
-	take_picture()
+	# Set up camera
+	CAMERA = picamera.PiCamera()
+	CAMERA.resolution = (1024, 768)
+	CAMERA.start_preview()
 
 	# Get slave ID ("which camera in the sequence am I?")
 	SLAVE_ID = os.environ["SLAVE_ID"]
