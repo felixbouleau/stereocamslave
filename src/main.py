@@ -39,7 +39,7 @@ if __name__ == '__main__':
 		raise ValueError('SLAVE_ID env variable not set')
  	GPIO.setmode(GPIO.BCM)
  	channel = 26
- 	GPIO.setup(channel, GPIO.IN) #, pull_up_down=GPIO.PUD_DOWN
+ 	GPIO.setup(channel, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 	print('Starting edge event monitoring')
 	GPIO.add_event_detect(channel,
 						  GPIO.RISING,
