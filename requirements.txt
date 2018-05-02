@@ -1,3 +1,5 @@
 requests
 RPi.Gpio
 picamera
+flask
+imageio
