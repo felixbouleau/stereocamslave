@@ -7,6 +7,7 @@ import picamera
 
 SLAVE_ID = None
 CAMERA = None
+IS_MASTER = None
 
 # TODO
 
@@ -29,17 +30,8 @@ def triggered_callback(channel):
 
 # 	Re-sync settings
 
-if __name__ == '__main__':
-	# Set up camera
-	CAMERA = picamera.PiCamera()
-	CAMERA.resolution = (1024, 768)
-	CAMERA.start_preview()
-
-	# Get slave ID ("which camera in the sequence am I?")
-	SLAVE_ID = os.environ["SLAVE_ID"]
-	if SLAVE_ID is None:
-		raise ValueError('SLAVE_ID env variable not set')
- 	GPIO.setmode(GPIO.BCM)
+def start_as_slave():
+	GPIO.setmode(GPIO.BCM)
  	channel = 26
  	GPIO.setup(channel, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 	print('Starting edge event monitoring')
@@ -53,4 +45,22 @@ if __name__ == '__main__':
 		r = requests.get('http://192.168.1.123/sync')
 		time.sleep(5)
 	print('Stopping (?)')
+
+if __name__ == '__main__':
+ 	# Set up camera
+	CAMERA = picamera.PiCamera()
+	CAMERA.resolution = (1024, 768)
+	CAMERA.start_preview()
+
+	# Get slave ID ("which camera in the sequence am I?")
+	SLAVE_ID = os.environ["SLAVE_ID"]
+	IS_MASTER = os.environ["IS_MASTER"]
+	if IS_MASTER is not None:
+		print('Is master!')
+		start_as_master()
+	else:
+		print('Is slave!')
+		start_as_slave()
+
+ 	
 
