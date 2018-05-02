@@ -53,8 +53,10 @@ if __name__ == '__main__':
     CAMERA.start_preview()
 
     # Get slave ID ("which camera in the sequence am I?")
-    SLAVE_ID = os.environ["SLAVE_ID"]
-    IS_MASTER = os.environ["IS_MASTER"]
+    
+    SLAVE_ID = os.environ.get("SLAVE_ID")
+    IS_MASTER = os.environ.get("IS_MASTER")
+    
     if IS_MASTER is not None:
         print('Is master!')
         start_as_master()
