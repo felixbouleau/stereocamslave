@@ -19,7 +19,7 @@ IS_MASTER = None
 
 def triggered_callback(channel):
     print('Trigger detected on channel %s. Uploading sample image...' % channel)
-	camera.capture('/data/%s.jpg') % SLAVE_ID
+    camera.capture('/data/%s.jpg') % SLAVE_ID
     url = "http://192.168.1.123/"
     file_path = "/data/%s.jpg" % SLAVE_ID
     files = {'file': open(file_path, "rb")}
