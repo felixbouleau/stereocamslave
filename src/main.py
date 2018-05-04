@@ -136,7 +136,11 @@ def start_as_slave():
     print('Stopping (?)')
 
 def start_as_master():
-     app.run(host='0.0.0.0', port=80, debug=True)
+     #app.run(host='0.0.0.0', port=80, debug=True)
+      while True:
+        # TODO actually sync settings..
+        print('pretending to do server things...')
+        time.sleep(60)
 
 if __name__ == '__main__':
     # Set up camera
