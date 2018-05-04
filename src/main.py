@@ -11,7 +11,7 @@ import imageio
 from PIL import Image
 
 # master
-UPLOAD_FOLDER = '/usr/src/app/img/'
+UPLOAD_FOLDER = '/data/'
 OUTPUT_FOLDER = '/usr/src/app/output/'
 TMP_FOLDER = '/usr/src/app/tmp/'
 ALLOWED_EXTENSIONS = set(['txt', 'jpg', 'jpeg'])
@@ -61,6 +61,8 @@ def create_gif(sequence_id):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -140,9 +142,9 @@ def start_as_master():
     # images from slaves
     app.run(host='0.0.0.0', port=80)# , debug=True)
 
-    #while True:
-    #    print('pretending to do server things...')
-    #    time.sleep(60)
+    while True:
+        print('pretending to do server things...')
+        time.sleep(60)
 
 if __name__ == '__main__':
     # Get slave ID ("which camera in the sequence am I?")
