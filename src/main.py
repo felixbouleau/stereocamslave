@@ -137,20 +137,28 @@ def start_as_slave():
         time.sleep(5)
     print('Stopping (?)')
 
-def start_as_master():
-    # Start flask server for syncing settings and receiving
-    # images from slaves
-    app.run(host='0.0.0.0', port=80)# , debug=True)
+def master_loop(loop_on):
     GPIO.setmode(GPIO.BCM)
     channel = 26
     GPIO.setup(channel, GPIO.OUT)
     GPIO.output(channel, 0)
     while True:
-        print('taking a picture (...every 30 seconds)')
-        GPIO.output(channel, 1)
-        camera.capture('/data/master.jpg')
-        GPIO.output(channel, 0)
-        time.sleep(60)
+        if loop_on.value == True:
+            print('taking a picture (...every 30 seconds)')
+            GPIO.output(channel, 1)
+            camera.capture('/data/master.jpg')
+            GPIO.output(channel, 0)
+            time.sleep(60)  
+
+def start_as_master():
+    # Run the master loop (for triggering picture taking)
+    recording_on = Value('b', True)
+    p = Process(target=master_loop, args=(recording_on,))
+    p.start() 
+    # Start flask server for syncing settings and receiving
+    # images from slaves
+    app.run(host='0.0.0.0', port=80, use_reloader=False)# , debug=True)
+    p.join()
 
 if __name__ == '__main__':
     # Get slave ID ("which camera in the sequence am I?")
