@@ -136,27 +136,29 @@ def start_as_slave():
     print('Stopping (?)')
 
 def start_as_master():
-     #app.run(host='0.0.0.0', port=80, debug=True)
-      while True:
-        # TODO actually sync settings..
-        print('pretending to do server things...')
-        time.sleep(60)
+    # Start flask server for syncing settings and receiving
+    # images from slaves
+    app.run(host='0.0.0.0', port=80)# , debug=True)
+
+    #while True:
+    #    print('pretending to do server things...')
+    #    time.sleep(60)
 
 if __name__ == '__main__':
-    # Set up camera
-    CAMERA = picamera.PiCamera()
-    CAMERA.resolution = (1024, 768)
-    CAMERA.start_preview()
-
     # Get slave ID ("which camera in the sequence am I?")
     
     SLAVE_ID = os.environ.get("SLAVE_ID")
     IS_MASTER = os.environ.get("IS_MASTER")
     
+    # Set up camera if it isn't already
+    if CAMERA != None:
+        CAMERA = picamera.PiCamera()
+        CAMERA.resolution = (1024, 768)
+        CAMERA.start_preview()
+
     if IS_MASTER is not None:
         print('Is master!')
         start_as_master()
     else:
         print('Is slave!')
         start_as_slave()
-
