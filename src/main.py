@@ -149,7 +149,7 @@ def master_loop(loop_on):
             GPIO.output(channel, 1)
             CAMERA.capture('/data/master.jpg')
             GPIO.output(channel, 0)
-            time.sleep(60)  
+            time.sleep(10)  
 
 def start_as_master():
     # Run the master loop (for triggering picture taking)
@@ -176,6 +176,6 @@ if __name__ == '__main__':
     if IS_MASTER is not None:
         print('Is master!')
         start_as_master()
-    else:
+    else if SLAVE_ID is not None:
         print('Is slave!')
         start_as_slave()
