@@ -141,9 +141,15 @@ def start_as_master():
     # Start flask server for syncing settings and receiving
     # images from slaves
     app.run(host='0.0.0.0', port=80)# , debug=True)
-
+    GPIO.setmode(GPIO.BCM)
+    channel = 26
+    GPIO.setup(channel, GPIO.OUT)
+    GPIO.output(channel, 0)
     while True:
-        print('pretending to do server things...')
+        print('taking a picture (...every 30 seconds)')
+        GPIO.output(channel, 1)
+        camera.capture('/data/master.jpg')
+        GPIO.output(channel, 0)
         time.sleep(60)
 
 if __name__ == '__main__':
