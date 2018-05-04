@@ -162,6 +162,7 @@ def start_as_master():
     p.join()
 
 if __name__ == '__main__':
+    print('Hello...')
     # Get slave ID ("which camera in the sequence am I?")
     
     SLAVE_ID = os.environ.get("SLAVE_ID")
