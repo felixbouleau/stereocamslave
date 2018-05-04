@@ -152,7 +152,7 @@ def master_loop(loop_on):
 
 def start_as_master():
     # Run the master loop (for triggering picture taking)
-    recording_on = Value('b', True)
+    recording_on = True
     p = Process(target=master_loop, args=(recording_on,))
     p.start() 
     # Start flask server for syncing settings and receiving
