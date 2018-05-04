@@ -168,7 +168,7 @@ if __name__ == '__main__':
     IS_MASTER = os.environ.get("IS_MASTER")
     
     # Set up camera if it isn't already
-    if CAMERA != None:
+    if CAMERA == None:
         CAMERA = picamera.PiCamera()
         CAMERA.resolution = (1024, 768)
         CAMERA.start_preview()
