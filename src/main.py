@@ -115,7 +115,7 @@ def makegifendpoint(sequence_id):
 
 def triggered_callback(channel):
     print('Trigger detected on channel %s. Uploading sample image...' % channel)
-    camera.capture('/data/%s.jpg') % SLAVE_ID
+    CAMERA.capture('/data/%s.jpg') % SLAVE_ID
     url = "http://192.168.1.123/"
     file_path = "/data/%s.jpg" % SLAVE_ID
     files = {'file': open(file_path, "rb")}
@@ -135,7 +135,7 @@ def start_as_slave():
         # TODO actually sync settings..
         print('Syncing settings')
         r = requests.get('http://192.168.1.123/sync')
-        time.sleep(5)
+        time.sleep(30)
     print('Stopping (?)')
 
 def master_loop(loop_on):
@@ -147,7 +147,7 @@ def master_loop(loop_on):
         if loop_on == True:
             print('taking a picture (...every 30 seconds)')
             GPIO.output(channel, 1)
-            camera.capture('/data/master.jpg')
+            CAMERA.capture('/data/master.jpg')
             GPIO.output(channel, 0)
             time.sleep(60)  
 
