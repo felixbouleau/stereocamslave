@@ -144,7 +144,7 @@ def master_loop(loop_on):
     GPIO.setup(channel, GPIO.OUT)
     GPIO.output(channel, 0)
     while True:
-        if loop_on.value == True:
+        if loop_on == True:
             print('taking a picture (...every 30 seconds)')
             GPIO.output(channel, 1)
             camera.capture('/data/master.jpg')
