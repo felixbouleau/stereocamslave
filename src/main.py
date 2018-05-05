@@ -177,6 +177,6 @@ if __name__ == '__main__':
     if IS_MASTER is not None:
         print('Is master!')
         start_as_master()
-    else if SLAVE_ID is not None:
+    elif SLAVE_ID is not None:
         print('Is slave!')
         start_as_slave()
