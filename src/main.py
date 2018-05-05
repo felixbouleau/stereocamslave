@@ -118,7 +118,7 @@ def triggered_callback(channel):
     print(SLAVE_ID)
     print (type(SLAVE_ID))
     print('Trigger detected on channel %s. Uploading sample image...' % channel)
-    CAMERA.capture('/data/%s.jpg') % SLAVE_ID
+    CAMERA.capture('/data/%s.jpg' % SLAVE_ID) 
     url = "http://192.168.1.123/"
     file_path = "/data/%s.jpg" % SLAVE_ID
     files = {'file': open(file_path, "rb")}
