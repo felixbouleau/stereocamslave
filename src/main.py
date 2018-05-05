@@ -114,6 +114,9 @@ def makegifendpoint(sequence_id):
                                "%s.gif" % sequence_id)
 
 def triggered_callback(channel):
+    print("Slave ID debug:")
+    print(SLAVE_ID)
+    print (type(SLAVE_ID))
     print('Trigger detected on channel %s. Uploading sample image...' % channel)
     CAMERA.capture('/data/%s.jpg') % SLAVE_ID
     url = "http://192.168.1.123/"
@@ -135,7 +138,7 @@ def start_as_slave():
         # TODO actually sync settings..
         print('Syncing settings')
         r = requests.get('http://192.168.1.123/sync')
-        time.sleep(30)
+        time.sleep(300)
     print('Stopping (?)')
 
 def master_loop(loop_on):
