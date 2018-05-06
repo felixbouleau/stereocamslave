@@ -1,14 +1,10 @@
 import requests
 import time
-import RPi.GPIO as GPIO
 import os
-import picamera
 from flask import Flask, request, redirect, url_for, send_from_directory, jsonify
 from werkzeug.utils import secure_filename
 import json
 import imageio
-from PIL import Image
-from multiprocessing import Process
 
 # master
 UPLOAD_FOLDER = '/data/'
@@ -25,9 +21,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 # slave
 SLAVE_ID = None
-CAMERA = None
 IS_MASTER = None
-MASTER_IP = None
 
 
 def resize_image(input_image_path,
@@ -113,77 +107,8 @@ def makegifendpoint(sequence_id):
     return send_from_directory(app.config['OUTPUT_FOLDER'],
                                "%s.gif" % sequence_id)
 
-def triggered_callback(channel):
-    print("Slave ID debug:")
-    print(SLAVE_ID)
-    print (type(SLAVE_ID))
-    print('Trigger detected on channel %s. Uploading sample image...' % channel)
-    CAMERA.capture('/data/%s.jpg' % SLAVE_ID) 
-    url = "http://%s/" % MASTER_IP
-    file_path = "/data/%s.jpg" % SLAVE_ID
-    files = {'file': open(file_path, "rb")}
-    requests.post(url, files=files)
-    print('Upload completed')
-
-def start_as_slave():
-    GPIO.setmode(GPIO.BCM)
-    channel = 26
-    GPIO.setup(channel, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    print('Starting edge event monitoring')
-    GPIO.add_event_detect(channel,
-                          GPIO.RISING,
-                          callback=triggered_callback,
-                          bouncetime=5000)
-    while True:
-        # TODO actually sync settings..
-        print('Syncing settings')
-        r = requests.get('http://%s/sync' % MASTER_IP)
-        time.sleep(300)
-    print('Stopping (?)')
-
-def master_loop(loop_on):
-    GPIO.setmode(GPIO.BCM)
-    channel = 26
-    GPIO.setup(channel, GPIO.OUT)
-    GPIO.output(channel, 0)
-    while True:
-        if loop_on == True:
-            print('taking a picture (...every 30 seconds)')
-            GPIO.output(channel, 1)
-            CAMERA.capture('/data/master.jpg')
-            GPIO.output(channel, 0)
-            time.sleep(10)  
-
 def start_as_master():
-    # Run the master loop (for triggering picture taking)
-    recording_on = True
-    p = Process(target=master_loop, args=(recording_on,))
-    p.start() 
-    # Start flask server for syncing settings and receiving
-    # images from slaves
     app.run(host='0.0.0.0', port=80, use_reloader=False)# , debug=True)
-    p.join()
 
 if __name__ == '__main__':
-    print('Hello...')
-    # Get slave ID ("which camera in the sequence am I?")
-    
-    SLAVE_ID = os.environ.get("SLAVE_ID")
-    IS_MASTER = os.environ.get("IS_MASTER")
-    MASTER_IP = os.environ.get("MASTER_IP")
-    
-    if MASTER_IP is None:
-        raise ValueError("Master IP not set... Set it as env variable.") 
-
-    # Set up camera if it isn't already
-    if CAMERA == None:
-        CAMERA = picamera.PiCamera()
-        CAMERA.resolution = (1024, 768)
-        CAMERA.start_preview()
-
-    if IS_MASTER is not None:
-        print('Is master!')
-        start_as_master()
-    elif SLAVE_ID is not None:
-        print('Is slave!')
-        start_as_slave()
+    start_as_master()
