@@ -140,7 +140,7 @@ def start_as_slave():
     GPIO.add_event_detect(channel,
                           GPIO.RISING,
                           callback=triggered_callback,
-                          bouncetime=5000)
+                          bouncetime=500)
     while True:
         # TODO actually sync settings..
         print('Syncing settings')
