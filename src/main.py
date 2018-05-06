@@ -127,6 +127,13 @@ def triggered_callback(channel):
 
 def start_as_slave():
     GPIO.setmode(GPIO.BCM)
+    
+    # Set one pin to high for trigger button to use
+    button_channel = 20
+    GPIO.setup(button_channel, GPIO.OUT)
+    GPIO.output(button_channel, 1)
+
+    # Listen for input on the adjecent pin
     channel = 26
     GPIO.setup(channel, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     print('Starting edge event monitoring')
